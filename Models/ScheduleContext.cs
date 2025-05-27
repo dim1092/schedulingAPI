@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SchedulinAPI.Models;
 using System.Reflection.Emit;
 
 namespace SchedulingAPI.Models;
 
-public class ScheduleContext : DbContext
+public class ScheduleContext : IdentityDbContext<User>
 {
     public ScheduleContext(DbContextOptions<ScheduleContext> options)
         : base(options)

@@ -1,6 +1,8 @@
-﻿namespace SchedulingAPI.Models;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class User
+namespace SchedulingAPI.Models;
+
+public class User : IdentityUser
 {
     public long Id { get; set; }
     public string Name { get; set; } = null!;
