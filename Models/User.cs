@@ -4,7 +4,6 @@ namespace SchedulingAPI.Models;
 
 public class User : IdentityUser
 {
-    public long Id { get; set; }
     public string Name { get; set; } = null!;
     public string Email { get; set; } = null!;
     public List<ScheduledEvent> OwnedEvents { get; set; } = null!;
