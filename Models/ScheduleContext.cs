@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SchedulinAPI.Models;
 using System.Reflection.Emit;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SchedulingAPI.Models;
 
@@ -19,7 +20,7 @@ public class ScheduleContext : IdentityDbContext<User>
         modelBuilder.Entity<ScheduledEvent>()
             .HasOne(e => e.Owner)
             .WithMany(u => u.OwnedEvents)
-            .OnDelete(DeleteBehavior.Cascade); // or .Restrict, .Cascade based on your logic
+            .OnDelete(DeleteBehavior.Restrict); // You can't delete a User if they are the owner of any event. Prevents cascade deletion.
     }
 
 

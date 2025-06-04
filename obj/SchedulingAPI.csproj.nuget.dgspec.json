@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dimde\\Source\\Repos\\schedulingAPI\\SchedulingAPI.csproj": {}
+    "C:\\Users\\dimde\\source\\repos\\schedulingAPI\\SchedulingAPI\\SchedulingAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dimde\\Source\\Repos\\schedulingAPI\\SchedulingAPI.csproj": {
+    "C:\\Users\\dimde\\source\\repos\\schedulingAPI\\SchedulingAPI\\SchedulingAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dimde\\Source\\Repos\\schedulingAPI\\SchedulingAPI.csproj",
+        "projectUniqueName": "C:\\Users\\dimde\\source\\repos\\schedulingAPI\\SchedulingAPI\\SchedulingAPI.csproj",
         "projectName": "SchedulingAPI",
-        "projectPath": "C:\\Users\\dimde\\Source\\Repos\\schedulingAPI\\SchedulingAPI.csproj",
+        "projectPath": "C:\\Users\\dimde\\source\\repos\\schedulingAPI\\SchedulingAPI\\SchedulingAPI.csproj",
         "packagesPath": "C:\\Users\\dimde\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dimde\\Source\\Repos\\schedulingAPI\\obj\\",
+        "outputPath": "C:\\Users\\dimde\\source\\repos\\schedulingAPI\\SchedulingAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -43,12 +43,16 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "AutoFixture": {
+              "target": "Package",
+              "version": "[4.18.1, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[9.0.5, )"
@@ -103,7 +107,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

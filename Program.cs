@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SchedulinAPI;
 using SchedulingAPI.Models;
 using System.Text;
 
@@ -12,13 +13,25 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddDbContext<ScheduleContext>(opt =>
-    opt.UseInMemoryDatabase("SchedulingAPI"));
+var connectionString = builder.Configuration.GetConnectionString("DbConnectionString")
+    ?? throw new InvalidOperationException("Connection string 'DbConnectionString' not found.");
 
+builder.Services.AddDbContext<ScheduleContext>(options =>
+    options.UseSqlServer(connectionString, sqlOptions =>
+        sqlOptions.EnableRetryOnFailure()));
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ScheduleContext>()
     .AddDefaultTokenProviders();
+
+//builder.Services.AddIdentityCore<User>(options =>
+//{
+//    options.Password.RequireDigit = false;
+//    options.Password.RequiredLength = 6;
+//}).AddEntityFrameworkStores<ScheduleContext>()
+//    .AddSignInManager()
+//    .AddDefaultTokenProviders();
+
 
 // JWT configuration
 var jwtSettings = builder.Configuration.GetSection("Jwt");
@@ -60,3 +73,13 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+if (app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var scheduleContext = scope.ServiceProvider.GetRequiredService<ScheduleContext>();
+        scheduleContext.Database.EnsureCreated();
+        scheduleContext.Seed();
+    }
+}

@@ -12,10 +12,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["SchedulingAPI.csproj", "."]
-RUN dotnet restore "./SchedulingAPI.csproj"
+COPY ["SchedulingAPI/SchedulingAPI.csproj", "SchedulingAPI/"]
+RUN dotnet restore "./SchedulingAPI/SchedulingAPI.csproj"
 COPY . .
-WORKDIR "/src/."
+WORKDIR "/src/SchedulingAPI"
 RUN dotnet build "./SchedulingAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
