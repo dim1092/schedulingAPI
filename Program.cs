@@ -74,12 +74,19 @@ app.MapControllers();
 
 app.Run();
 
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
+//{
+try
 {
     using (var scope = app.Services.CreateScope())
     {
         var scheduleContext = scope.ServiceProvider.GetRequiredService<ScheduleContext>();
-        scheduleContext.Database.EnsureCreated();
+        scheduleContext.Database.Migrate();
         scheduleContext.Seed();
     }
 }
+catch (Exception ex)
+{
+    throw new Exception(ex.Message);
+}
+//}

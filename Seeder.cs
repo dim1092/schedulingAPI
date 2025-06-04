@@ -9,11 +9,16 @@ public static class Seeder
     {
         if (!scheduleContext.Users.Any())
         {
+            User testUser = new();
+            testUser.Name = "testName";
+            testUser.UserName = "testUserName";
+            testUser.Email = "email";
+            scheduleContext.Users.Add(testUser);
             Fixture fixture = new Fixture();
             fixture.Customize<User>(user => user.Without(p => p.Id));
             //--- The next two lines add 100 rows to your database
-            List<User> products = fixture.CreateMany<User>(100).ToList();
-            scheduleContext.AddRange(products);
+            List<User> users = fixture.CreateMany<User>(100).ToList();
+            scheduleContext.AddRange(users);
             scheduleContext.SaveChanges();
         }
     }
