@@ -288,8 +288,10 @@ C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\Schedul
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\SchedulingAPI.runtimeconfig.json
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\SchedulingAPI.dll
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\SchedulingAPI.pdb
+C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\AutoFixture.dll
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\Azure.Core.dll
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\Azure.Identity.dll
+C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\Fare.dll
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\Humanizer.dll
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Cryptography.Internal.dll
@@ -536,6 +538,7 @@ C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\runtime
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\SchedulingAPI.csproj.AssemblyReference.cache
+C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\rpswa.dswa.cache.json
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\SchedulingAPI.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\SchedulingAPI.AssemblyInfoInputs.cache
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\SchedulingAPI.AssemblyInfo.cs
@@ -543,6 +546,9 @@ C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\Schedul
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\SchedulingAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\SchedulingAPI.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\SchedulingAPI.sourcelink.json
+C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\rjimswa.dswa.cache.json
+C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
+C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\scopedcss\bundle\SchedulingAPI.styles.css
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\staticwebassets.build.json.cache
@@ -554,6 +560,4 @@ C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\refint\
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\SchedulingAPI.pdb
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\SchedulingAPI.genruntimeconfig.cache
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\ref\SchedulingAPI.dll
-C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\AutoFixture.dll
-C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\bin\Debug\net9.0\Fare.dll
 C:\Users\dimde\source\repos\schedulingAPI\SchedulingAPI\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

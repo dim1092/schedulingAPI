@@ -2,7 +2,7 @@
 
 public class ScheduledEvent
 {
-    public long Id { get; set; }
+    public string Id { get; set; }
     public string Name { get; set; } = null!;
     public User Owner { get; set; }
     public DateTimeRange DateTimeRange { get; set; } = null!;

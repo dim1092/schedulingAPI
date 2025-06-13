@@ -635,13 +635,13 @@ namespace SchedulingAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SchedulingAPI.Models.User", "Staff")
+                    b.HasOne("SchedulingAPI.Models.User", "ID")
                         .WithMany("StaffContracts")
                         .HasForeignKey("StaffId");
 
                     b.Navigation("Shop");
 
-                    b.Navigation("Staff");
+                    b.Navigation("ID");
                 });
 
             modelBuilder.Entity("SchedulingAPI.Models.User", b =>

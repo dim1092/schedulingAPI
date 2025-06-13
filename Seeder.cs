@@ -10,8 +10,7 @@ public static class Seeder
         if (!scheduleContext.Users.Any())
         {
             User testUser = new();
-            testUser.Name = "testName";
-            testUser.UserName = "testUserName";
+            testUser.UserName = "testName";
             testUser.Email = "email";
             scheduleContext.Users.Add(testUser);
             Fixture fixture = new Fixture();

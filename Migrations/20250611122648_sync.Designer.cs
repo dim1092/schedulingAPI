@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchedulingAPI.Models;
 
@@ -11,9 +12,11 @@ using SchedulingAPI.Models;
 namespace SchedulingAPI.Migrations
 {
     [DbContext(typeof(ScheduleContext))]
-    partial class ScheduleContextModelSnapshot : ModelSnapshot
+    [Migration("20250611122648_sync")]
+    partial class sync
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,20 +196,20 @@ namespace SchedulingAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("OfferingShopId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<long?>("ShopId")
+                        .HasColumnType("bigint");
 
                     b.Property<long?>("StaffContractId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OfferingShopId");
-
                     b.HasIndex("OwnerId");
+
+                    b.HasIndex("ShopId");
 
                     b.HasIndex("StaffContractId");
 
@@ -343,7 +346,6 @@ namespace SchedulingAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -545,21 +547,17 @@ namespace SchedulingAPI.Migrations
 
             modelBuilder.Entity("SchedulingAPI.Models.Bookable", b =>
                 {
-                    b.HasOne("SchedulingAPI.Models.Shop", "OfferingShop")
-                        .WithMany("Bookables")
-                        .HasForeignKey("OfferingShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("SchedulingAPI.Models.User", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId");
 
+                    b.HasOne("SchedulingAPI.Models.Shop", null)
+                        .WithMany("Bookables")
+                        .HasForeignKey("ShopId");
+
                     b.HasOne("SchedulingAPI.Models.StaffContract", null)
                         .WithMany("Bookables")
                         .HasForeignKey("StaffContractId");
-
-                    b.Navigation("OfferingShop");
 
                     b.Navigation("Owner");
                 });

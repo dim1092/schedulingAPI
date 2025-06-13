@@ -2,11 +2,12 @@
 
 public class Bookable
 {
-    public long Id { get; set; }
-    public string Name { get; set; } = null!;
+    public string Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public Shop OfferingShop { get; set; } = null!;
     public User Owner { get; set; } = null!;
-    public List<User> JoiningUsers { get; set; } = null!;
-    public string? Description { get; set; }
+    public List<User> JoiningUsers { get; set; } = new();
+    public string Description { get; set; } = string.Empty;
     public double Duration { get; set; }
-    public List<OperatingHours> OperatingHours { get; set; } = null!;
+    public List<OperatingHours> OperatingHours { get; set; } = new();
 }
