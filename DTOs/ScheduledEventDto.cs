@@ -26,4 +26,26 @@ public class ScheduledEventDto
         }
         BookableId = ev.Bookable.Id;
     }
+
+    public ScheduledEvent ToScheduledEvent(ScheduleContext context)
+    {
+        ScheduledEvent ev = new()
+        {
+            Id = Id,
+            Name = Name,
+            Owner = context.Users.Find(OwnerId) ?? throw new ArgumentException("Owner not found"),
+            DateTimeRange = DateTimeRange,
+            Location = Location,
+            Bookable = context.Bookables.Find(BookableId) ?? throw new ArgumentException("Bookable not found")
+        };
+        foreach (string participantId in ParticipantsId)
+        {
+            User? participant = context.Users.Find(participantId);
+            if (participant != null)
+            {
+                ev.Participants.Add(participant);
+            }
+        }
+        return ev;
+    }
 }

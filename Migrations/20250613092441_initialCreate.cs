@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SchedulingAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,10 +29,9 @@ namespace SchedulingAPI.Migrations
                 name: "Shops",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -67,7 +66,7 @@ namespace SchedulingAPI.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OwnerId = table.Column<long>(type: "bigint", nullable: false),
+                    OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -77,8 +76,7 @@ namespace SchedulingAPI.Migrations
                         name: "FK_Equipment_Shops_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "Shops",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -133,11 +131,10 @@ namespace SchedulingAPI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    BookableId = table.Column<long>(type: "bigint", nullable: true),
+                    BookableId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -180,7 +177,7 @@ namespace SchedulingAPI.Migrations
                 columns: table => new
                 {
                     OwnersId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ShopsId = table.Column<long>(type: "bigint", nullable: false)
+                    ShopsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -203,10 +200,9 @@ namespace SchedulingAPI.Migrations
                 name: "StaffContracts",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     StaffId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ShopId = table.Column<long>(type: "bigint", nullable: false)
+                    ShopId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -228,15 +224,14 @@ namespace SchedulingAPI.Migrations
                 name: "Bookables",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OfferingShopId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Duration = table.Column<double>(type: "float", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false),
-                    ShopId = table.Column<long>(type: "bigint", nullable: true),
-                    StaffContractId = table.Column<long>(type: "bigint", nullable: true)
+                    StaffContractId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -247,8 +242,8 @@ namespace SchedulingAPI.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Bookables_Shops_ShopId",
-                        column: x => x.ShopId,
+                        name: "FK_Bookables_Shops_OfferingShopId",
+                        column: x => x.OfferingShopId,
                         principalTable: "Shops",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -265,8 +260,8 @@ namespace SchedulingAPI.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DayOfWeek = table.Column<int>(type: "int", nullable: false),
-                    BookableId = table.Column<long>(type: "bigint", nullable: true),
-                    StaffContractId = table.Column<long>(type: "bigint", nullable: true)
+                    BookableId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    StaffContractId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -307,13 +302,12 @@ namespace SchedulingAPI.Migrations
                 name: "ScheduledEvents",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DateTimeRangeid = table.Column<long>(type: "bigint", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BookableId = table.Column<long>(type: "bigint", nullable: false),
+                    BookableId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     EquipmentId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
@@ -349,7 +343,7 @@ namespace SchedulingAPI.Migrations
                 columns: table => new
                 {
                     ParticipantsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ScheduledEventsId = table.Column<long>(type: "bigint", nullable: false)
+                    ScheduledEventsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -413,14 +407,14 @@ namespace SchedulingAPI.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Bookables_OfferingShopId",
+                table: "Bookables",
+                column: "OfferingShopId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Bookables_OwnerId",
                 table: "Bookables",
                 column: "OwnerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Bookables_ShopId",
-                table: "Bookables",
-                column: "ShopId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bookables_StaffContractId",

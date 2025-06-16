@@ -22,4 +22,26 @@ public class StaffContractDto
             Bookables.Add(bookable.Id);
         }
     }
+
+    public StaffContract ToStaffContract(ScheduleContext context)
+    {
+        StaffContract contract = new()
+        {
+            Id = Id,
+            Staff = context.Users.Find(StaffId) ?? throw new ArgumentException("Staff not found"),
+            Shop = context.Shops.Find(ShopId) ?? throw new ArgumentException("Shop not found"),
+            OperatingHours = OperatingHours
+        };
+        
+        foreach (string bookableId in Bookables)
+        {
+            Bookable? bookable = context.Bookables.Find(bookableId);
+            if (bookable != null)
+            {
+                contract.Bookables.Add(bookable);
+            }
+        }
+        
+        return contract;
+    }
 }

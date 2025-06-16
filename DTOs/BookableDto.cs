@@ -27,4 +27,27 @@ public class BookableDto
         Description = bookable.Description;
         OperatingHours = bookable.OperatingHours;
     }
+
+    public Bookable ToBookable(ScheduleContext context)
+    {
+        Bookable bookable = new()
+        {
+            Id = Id,
+            Name = Name,
+            Description = Description,
+            Duration = Duration,
+            OfferingShop = context.Shops.Find(OfferingShopId) ?? throw new ArgumentException("Offering shop not found"),
+            Owner = context.Users.Find(OwnerId) ?? throw new ArgumentException("Owner not found")
+        };
+        foreach (string userId in JoiningUsersIds)
+        {
+            User? user = context.Users.Find(userId);
+            if (user != null)
+            {
+                bookable.JoiningUsers.Add(user);
+            }
+        }
+        bookable.OperatingHours = OperatingHours;
+        return bookable;
+    }
 }

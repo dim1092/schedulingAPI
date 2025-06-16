@@ -160,8 +160,8 @@ namespace SchedulingAPI.Migrations
                     b.Property<string>("ParticipantsId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<long>("ScheduledEventsId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("ScheduledEventsId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ParticipantsId", "ScheduledEventsId");
 
@@ -172,13 +172,11 @@ namespace SchedulingAPI.Migrations
 
             modelBuilder.Entity("SchedulingAPI.Models.Bookable", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Discriminator")
@@ -193,14 +191,14 @@ namespace SchedulingAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("OfferingShopId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("OfferingShopId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<long?>("StaffContractId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("StaffContractId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -253,8 +251,8 @@ namespace SchedulingAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("OwnerId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -274,14 +272,14 @@ namespace SchedulingAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("BookableId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("BookableId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("DayOfWeek")
                         .HasColumnType("int");
 
-                    b.Property<long?>("StaffContractId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("StaffContractId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -294,14 +292,12 @@ namespace SchedulingAPI.Migrations
 
             modelBuilder.Entity("SchedulingAPI.Models.ScheduledEvent", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("BookableId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("BookableId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<long>("DateTimeRangeid")
                         .HasColumnType("bigint");
@@ -336,11 +332,8 @@ namespace SchedulingAPI.Migrations
 
             modelBuilder.Entity("SchedulingAPI.Models.Shop", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -357,14 +350,12 @@ namespace SchedulingAPI.Migrations
 
             modelBuilder.Entity("SchedulingAPI.Models.StaffContract", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("ShopId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("ShopId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("StaffId")
                         .HasColumnType("nvarchar(450)");
@@ -386,8 +377,8 @@ namespace SchedulingAPI.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<long?>("BookableId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("BookableId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -453,8 +444,8 @@ namespace SchedulingAPI.Migrations
                     b.Property<string>("OwnersId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<long>("ShopsId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("ShopsId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("OwnersId", "ShopsId");
 
@@ -547,9 +538,7 @@ namespace SchedulingAPI.Migrations
                 {
                     b.HasOne("SchedulingAPI.Models.Shop", "OfferingShop")
                         .WithMany("Bookables")
-                        .HasForeignKey("OfferingShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OfferingShopId");
 
                     b.HasOne("SchedulingAPI.Models.User", "Owner")
                         .WithMany()
@@ -575,9 +564,7 @@ namespace SchedulingAPI.Migrations
                 {
                     b.HasOne("SchedulingAPI.Models.Shop", "Owner")
                         .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OwnerId");
 
                     b.Navigation("Owner");
                 });
@@ -632,13 +619,13 @@ namespace SchedulingAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SchedulingAPI.Models.User", "ID")
+                    b.HasOne("SchedulingAPI.Models.User", "Staff")
                         .WithMany("StaffContracts")
                         .HasForeignKey("StaffId");
 
                     b.Navigation("Shop");
 
-                    b.Navigation("ID");
+                    b.Navigation("Staff");
                 });
 
             modelBuilder.Entity("SchedulingAPI.Models.User", b =>

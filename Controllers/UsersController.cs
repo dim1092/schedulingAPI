@@ -24,7 +24,13 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
     {
         List<UserDto> userDtos = new List<UserDto>();
-        var users = await _context.Users.ToListAsync();
+        var users = await _context.Users
+            .Include(u => u.Shops)
+            .Include(u => u.OwnedEvents)
+            .Include(u => u.ScheduledEvents)
+            .Include(u => u.StaffContracts)
+            .ToListAsync(); 
+
         foreach (var user in users) {
             userDtos.Add(new UserDto(user));
         }
@@ -33,9 +39,14 @@ public class UsersController : ControllerBase
 
     // GET: api/Users/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserDto>> GetUser(long id)
+    public async Task<ActionResult<UserDto>> GetUser(string id)
     {
-        var user = await _context.Users.FindAsync(id);
+        var user = await _context.Users
+            .Include(u => u.Shops)
+            .Include(u => u.OwnedEvents)
+            .Include(u => u.ScheduledEvents)
+            .Include(u => u.StaffContracts)
+            .FirstOrDefaultAsync(u => u.Id == id);
 
         if (user == null)
         {
@@ -48,8 +59,9 @@ public class UsersController : ControllerBase
     // PUT: api/Users/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutUser(string id, User user)
+    public async Task<IActionResult> PutUser(string id, UserDto userDto)
     {
+        User user = userDto.ToUser(_context);
         if (id != user.Id)
         {
             return BadRequest();
@@ -79,17 +91,17 @@ public class UsersController : ControllerBase
     // POST: api/Users
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<User>> PostUser(User user)
+    public async Task<ActionResult<UserDto>> PostUser(UserDto userDto)
     {
-        _context.Users.Add(user);
+        _context.Users.Add(userDto.ToUser(_context));
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetUser", new { id = user.Id }, user);
+        return CreatedAtAction("GetUser", new { id = userDto.Id }, userDto);
     }
 
     // DELETE: api/Users/5
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUser(long id)
+    public async Task<IActionResult> DeleteUser(string id)
     {
         var user = await _context.Users.FindAsync(id);
         if (user == null)

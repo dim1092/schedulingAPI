@@ -4,13 +4,14 @@ namespace SchedulingAPI.DTOs;
 
 public class ShopDto
 {
-    public string Id { get; }
-    public String Name { get; set; } = string.Empty;
+    public string Id { get; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
     public List<string> OwnersIds { get; set; } = new();
     public List<string> BookablesIds { get; set; } = new();
     public List<string> ContractsIds { get; set; } = new();
-    public string Address { get; set; } = "";
+    public string Address { get; set; } = string.Empty;
 
+    public ShopDto() { }
     public ShopDto(Shop shop)
     {
         Id = shop.Id;

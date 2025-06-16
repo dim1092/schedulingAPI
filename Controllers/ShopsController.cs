@@ -21,7 +21,11 @@ namespace SchedulingAPI.Controllers
         public async Task<ActionResult<IEnumerable<ShopDto>>> GetShops()
         {
             List<ShopDto> shopDtos = new List<ShopDto>();  
-            var shops = await _context.Shops.ToListAsync();
+            var shops = await _context.Shops
+                .Include(s => s.Contracts)
+                .Include(s => s.Owners)
+                .Include(s => s.Bookables)
+                .ToListAsync();
 
             foreach (var shop in shops)
             {
@@ -34,7 +38,11 @@ namespace SchedulingAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ShopDto>> GetShop(string id)
         {
-            var shop = await _context.Shops.FindAsync(id);
+            var shop = await _context.Shops
+               .Include(s => s.Contracts)
+                .Include(s => s.Owners)
+                .Include(s => s.Bookables)
+                .FirstOrDefaultAsync(s => s.Id == id);
 
             if (shop == null)
             {
@@ -78,20 +86,28 @@ namespace SchedulingAPI.Controllers
         // POST: api/Shops
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Shop>> PostShop(ShopDto shop)
+        public async Task<ActionResult<ShopDto>> PostShop(ShopDto shopDto) // Renamed parameter to shopDto for clarity
         {
-            // In this setup, you typically have a join table in the database (e.g., ShopUser or OwnerShop)
-            // that links Shop IDs to User IDs. EF Core manages this join table for you.
-
-            _context.Shops.Add(shop.ToShop(_context));
+            var shopEntity = shopDto.ToShop(_context);
+            shopEntity.Id = Guid.NewGuid().ToString();
+            _context.Shops.Add(shopEntity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetShop", new { id = shop.Id }, shop);
+            var createdShopDto = new ShopDto(shopEntity);
+
+            User? owner = _context.Users.Find("20ca1de4-24ac-4736-9196-ddf79d7f14b2"); // todo test remove
+
+
+            return CreatedAtAction(
+                actionName: "GetShop", // Name of the GET action to retrieve a single shop
+                routeValues: new { id = createdShopDto.Id }, // Pass the newly generated ID
+                value: createdShopDto // Return the ShopDto with the generated ID
+            );
         }
 
         // DELETE: api/Shops/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteShop(long id)
+        public async Task<IActionResult> DeleteShop(string id)
         {
             var shop = await _context.Shops.FindAsync(id);
             if (shop == null)
