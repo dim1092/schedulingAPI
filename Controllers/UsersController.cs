@@ -43,6 +43,12 @@ public class UsersController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDto>> GetUser(string id)
     {
+        // Check if current authenticated user is the same as the one being updated
+        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (currentUserId != id)
+        {
+            return Unauthorized();
+        }
         var user = await _context.Users
             .Include(u => u.Shops)
             .Include(u => u.OwnedEvents)
