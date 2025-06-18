@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SchedulingAPI.Models;
-using Microsoft.AspNetCore.Authorization;
 using SchedulingAPI.DTOs;
+using SchedulingAPI.Models;
+using SchedulingAPI.Services.DataIntegrityActions;
+using System.Security.Claims;
 
 namespace SchedulingAPI.Controllers;
 
@@ -58,16 +60,37 @@ public class UsersController : ControllerBase
 
     // PUT: api/Users/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [Authorize]
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutUser(string id, UserDto userDto)
+    public async Task<IActionResult> PutUser(string id, UserDetailsDto userDto)
     {
-        User user = userDto.ToUser(_context);
-        if (id != user.Id)
+        // Debugging: Get all claims to see what's actually there
+        foreach (var claim in User.Claims)
+        {
+            Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
+        }
+
+        if (id != userDto.Id)
         {
             return BadRequest();
         }
+        // Check if current authenticated user is the same as the one being updated
+        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (currentUserId != id)
+        {
+            return Unauthorized();
+        }
 
-        _context.Entry(user).State = EntityState.Modified;
+        User? dbUser = await _context.Users.FindAsync(id);
+        if (dbUser == null)
+        {
+            return NotFound();
+        }
+       
+        dbUser.UserName = userDto.UserName;
+        dbUser.Email = userDto.Email;
+
+        _context.Entry(dbUser).State = EntityState.Modified;
 
         try
         {
@@ -91,12 +114,16 @@ public class UsersController : ControllerBase
     // POST: api/Users
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<UserDto>> PostUser(UserDto userDto)
+    public async Task<ActionResult<UserDto>> PostUser(UserDetailsDto userdDetailsDto)
     {
-        _context.Users.Add(userDto.ToUser(_context));
+        User newUser = new User();
+        newUser.UserName = userdDetailsDto.UserName;
+        newUser.Email = userdDetailsDto.Email;
+
+        _context.Users.Add(newUser);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetUser", new { id = userDto.Id }, userDto);
+        return CreatedAtAction("GetUser", new { id = newUser.Id }, newUser);
     }
 
     // DELETE: api/Users/5

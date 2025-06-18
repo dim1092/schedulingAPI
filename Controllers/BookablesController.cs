@@ -67,6 +67,8 @@ namespace SchedulingAPI.Controllers
                 return BadRequest();
             }
 
+            
+
             _context.Entry(bookable).State = EntityState.Modified;
 
             try
