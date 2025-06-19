@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SchedulingAPI.DTOs;
 using SchedulingAPI.Models;
-using SchedulingAPI.Services.DataIntegrityActions;
 using System.Security.Claims;
 
 namespace SchedulingAPI.Controllers;

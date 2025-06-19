@@ -6,88 +6,94 @@ using SchedulinAPI;
 using SchedulingAPI.Models;
 using System.Text;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-
-var connectionString = builder.Configuration.GetConnectionString("DbConnectionString")
-    ?? throw new InvalidOperationException("Connection string 'DbConnectionString' not found.");
-
-builder.Services.AddDbContext<ScheduleContext>(options =>
-    options.UseSqlServer(connectionString, sqlOptions =>
-        sqlOptions.EnableRetryOnFailure()));
-
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddEntityFrameworkStores<ScheduleContext>()
-    .AddDefaultTokenProviders();
-
-//builder.Services.AddIdentityCore<User>(options =>
-//{
-//    options.Password.RequireDigit = false;
-//    options.Password.RequiredLength = 6;
-//}).AddEntityFrameworkStores<ScheduleContext>()
-//    .AddSignInManager()
-//    .AddDefaultTokenProviders();
-
-
-// JWT configuration
-var jwtSettings = builder.Configuration.GetSection("Jwt");
-var secretKey = jwtSettings["Key"];
-
-builder.Services.AddAuthentication(options =>
+public partial class Program
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
+    public static async Task Main(string[] args) // Explicit Main method with async support
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
+        var builder = WebApplication.CreateBuilder(args);
 
-        ValidIssuer = jwtSettings["Issuer"],
-        ValidAudience = jwtSettings["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
-    };
-});
+        // Add services to the container.
+        builder.Services.AddControllers();
+        // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+        builder.Services.AddOpenApi();
+
+        var connectionString = builder.Configuration.GetConnectionString("DbConnectionString")
+            ?? throw new InvalidOperationException("Connection string 'DbConnectionString' not found.");
+
+        builder.Services.AddDbContext<ScheduleContext>(options =>
+            options.UseSqlServer(connectionString, sqlOptions =>
+                sqlOptions.EnableRetryOnFailure()));
+
+        builder.Services.AddIdentity<User, IdentityRole>()
+            .AddEntityFrameworkStores<ScheduleContext>()
+            .AddDefaultTokenProviders();
+
+        //builder.Services.AddIdentityCore<User>(options =>
+        //{
+        //    options.Password.RequireDigit = false;
+        //    options.Password.RequiredLength = 6;
+        //}).AddEntityFrameworkStores<ScheduleContext>()
+        //    .AddSignInManager()
+        //    .AddDefaultTokenProviders();
 
 
-var app = builder.Build();
+        // JWT configuration
+        var jwtSettings = builder.Configuration.GetSection("Jwt");
+        var secretKey = jwtSettings["Key"];
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+        builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
 
-app.UseHttpsRedirection();
+                ValidIssuer = jwtSettings["Issuer"],
+                ValidAudience = jwtSettings["Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
+            };
+        });
 
-app.UseAuthentication();
-app.UseAuthorization();
 
-app.MapControllers();
+        var app = builder.Build();
 
-app.Run();
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.MapOpenApi();
+        }
 
-//if (app.Environment.IsDevelopment())
-//{
-try
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var scheduleContext = scope.ServiceProvider.GetRequiredService<ScheduleContext>();
-        scheduleContext.Database.Migrate();
-        scheduleContext.Seed();
+        app.UseHttpsRedirection();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        app.Run();
+
+        //if (app.Environment.IsDevelopment())
+        //{
+        try
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                var scheduleContext = scope.ServiceProvider.GetRequiredService<ScheduleContext>();
+                scheduleContext.Database.Migrate();
+                scheduleContext.Seed();
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+        //}
     }
 }
-catch (Exception ex)
-{
-    throw new Exception(ex.Message);
-}
-//}
